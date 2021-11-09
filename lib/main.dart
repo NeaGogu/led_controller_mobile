@@ -7,7 +7,7 @@ void main() {
   runApp(MaterialApp(
     initialRoute: '/home',
     routes: {
-      '/': (context) => Loading(),
+      // '/': (context) => Loading(),
       '/home': (context) => Home(),
       '/device': (context) => Device(),
     },

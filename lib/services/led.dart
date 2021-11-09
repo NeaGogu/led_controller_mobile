@@ -15,7 +15,7 @@ class Led {
 
   Future<String> getInfo() async {
     try {
-      Response response = await get(url).timeout(Duration(seconds: 2));
+      Response response = await get(url).timeout(Duration(seconds: 1));
       // TODO: add error handling code
       if (response.statusCode == 200) {
         Map data = jsonDecode(response.body);

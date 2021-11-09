@@ -20,13 +20,15 @@ class DeviceCard extends StatefulWidget {
 }
 
 class _DeviceCardState extends State<DeviceCard> {
-  late Color disabledColor = Colors.white;
+  Color disabledColor = Colors.white;
+  bool disableWidget = false;
 
   Future<bool> checkInitialStatus() async {
     String status = await widget.led.getInfo();
     if (status == "Failed") {
       setState(() {
         disabledColor = Colors.red.withOpacity(0.7);
+        disableWidget = true;
       });
       return false;
     }
@@ -52,36 +54,39 @@ class _DeviceCardState extends State<DeviceCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        // TODO: check if led is online
-        var resp = await checkInitialStatus();
-        if (resp == true) {
-          Navigator.pushNamed(context, '/device', arguments: widget.led);
-        }
-        print('alo');
-      },
-      child: Card(
-        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-        color: disabledColor,
-        child: Padding(
-          padding: EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              // TITLE
-              Text(
-                widget.deviceName.toUpperCase(),
-                style: TextStyle(
-                    fontSize: 20,
-                    letterSpacing: 2,
-                    color: Colors.purple,
-                    fontWeight: FontWeight.bold),
-              ),
-              // LOCATION
-              Text(widget.location,
-                  style: TextStyle(fontSize: 15, color: Colors.grey[600]))
-            ],
+    return AbsorbPointer(
+      absorbing: disableWidget,
+      child: GestureDetector(
+        onTap: () async {
+          // TODO: check if led is online
+          var resp = await checkInitialStatus();
+          if (resp == true) {
+            Navigator.pushNamed(context, '/device', arguments: widget.led);
+          }
+          print('alo');
+        },
+        child: Card(
+          margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+          color: disabledColor,
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                // TITLE
+                Text(
+                  widget.deviceName.toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 20,
+                      letterSpacing: 2,
+                      color: Colors.purple,
+                      fontWeight: FontWeight.bold),
+                ),
+                // LOCATION
+                Text(widget.location,
+                    style: TextStyle(fontSize: 15, color: Colors.grey[600]))
+              ],
+            ),
           ),
         ),
       ),

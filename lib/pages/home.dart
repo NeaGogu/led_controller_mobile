@@ -26,8 +26,9 @@ class _HomeState extends State<Home> {
         url: "http://10.0.2.2:5001/led1"),
   ];
 
-  Future<void> _refresh() async {
-    return Future.delayed(Duration(seconds: 1));
+  Future<bool> _refresh() async {
+    Navigator.popAndPushNamed(context, '/home');
+    return Future.value(false);
   }
 
   @override
