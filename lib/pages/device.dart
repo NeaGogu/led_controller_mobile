@@ -18,6 +18,7 @@ class _DeviceState extends State<Device> {
     // get current led configuration
     Led led = ModalRoute.of(context)!.settings.arguments as Led;
     newLedInfo = led.ledInfo;
+    pickerColor = Color(newLedInfo["color"]);
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -137,6 +138,8 @@ class _DeviceState extends State<Device> {
                                                 setState(() {
                                                   pickerColor = color;
                                                 });
+                                                newLedInfo["color"] =
+                                                    color.value;
                                                 Navigator.of(context).pop();
                                               },
                                               // showLabel: true,
@@ -149,7 +152,7 @@ class _DeviceState extends State<Device> {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                               child: Text(
-                                "0x${colorToHex(pickerColor)}",
+                                colorToHex(pickerColor, includeHashSign: true),
                                 style: TextStyle(color: Colors.grey[700]),
                               ),
                             )

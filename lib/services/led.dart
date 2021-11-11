@@ -10,6 +10,7 @@ class Led {
     "status": bool,
     "brightness": double,
     "mode": String,
+    "color": int
   };
 
   Led({required String url, required this.name}) {
@@ -27,7 +28,8 @@ class Led {
         ledInfo["status"] = data['status'];
         ledInfo["brightness"] = data['brightness'];
         ledInfo["mode"] = data['mode'];
-        print(ledInfo["brightness"].runtimeType);
+        ledInfo["color"] = data['color'];
+
         return "Success";
       }
       return "Failed";
