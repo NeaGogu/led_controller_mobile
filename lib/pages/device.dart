@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:led_controller/services/led.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class Device extends StatefulWidget {
   const Device({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class Device extends StatefulWidget {
 
 class _DeviceState extends State<Device> {
   Map newLedInfo = {};
+  Color pickerColor = Color(0xff443a49);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ class _DeviceState extends State<Device> {
                   height: 20,
                 ),
                 Text(
-                  "BRIGHTNESS",
+                  "BRIGHTNESS: ${(newLedInfo['brightness'] as double).floor()}",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -89,13 +91,78 @@ class _DeviceState extends State<Device> {
                   min: 0,
                   max: 250,
                   divisions: 25,
-                  label: '${(newLedInfo["brightness"] as double).floor()}',
+                  // label: '${(newLedInfo["brightness"] as double).floor()}',
                 ),
                 Divider(
                   height: 10,
                   color: Colors.grey,
                   thickness: 3,
                 ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "COLOR",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                            Text(
+                              "( click to change )",
+                              style: TextStyle(
+                                  fontSize: 15, color: Colors.grey[600]),
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            FloatingActionButton(
+                                backgroundColor: pickerColor,
+                                elevation: 0,
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: SingleChildScrollView(
+                                            child: BlockPicker(
+                                              pickerColor: pickerColor,
+                                              onColorChanged: (Color color) {
+                                                setState(() {
+                                                  pickerColor = color;
+                                                });
+                                                Navigator.of(context).pop();
+                                              },
+                                              // showLabel: true,
+                                              // pickerAreaHeightPercent: 0.8,
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                }),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: Text(
+                                "0x${colorToHex(pickerColor)}",
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                            )
+                          ],
+                        ),
+                      ]),
+                ),
+                Divider(
+                  height: 10,
+                  color: Colors.grey,
+                  thickness: 3,
+                ),
+                Container() // TODO: mode selector
               ],
             ),
           ],

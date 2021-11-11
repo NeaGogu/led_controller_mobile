@@ -13,7 +13,6 @@ class Led {
   };
 
   Led({required String url, required this.name}) {
-    print(ledInfo["brightness"].runtimeType);
     this.url = Uri.parse("http://10.0.2.2:5001/led1");
   }
 
